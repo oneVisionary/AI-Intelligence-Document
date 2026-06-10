@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
 from models.document import Document
-from schemas.document import DocumentCreate
+
 from core.logging import logger
 
 import uuid
@@ -14,18 +14,18 @@ class DocumentService:
     def __init__(self):
         self.document_repository = DocumentRepository()
 
-    def document_create(self, db: Session, document_data: DocumentCreate):
+    def document_create(self, db: Session, metadata: dict, file_path: str):
 
         try:
 
-            logger.info(f"Creating document: {document_data.original_filename}")
+            logger.info(f"Creating document: {metadata['original_filename']}")
 
             document = Document(
                 document_id=f"DOC-{uuid.uuid4().hex[:8]}",
-                original_filename=document_data.original_filename,
-                file_path=document_data.file_path,
-                file_type=document_data.file_type,
-                file_size=document_data.file_size,
+                original_filename=metadata["original_filename"],
+                file_path=file_path,
+                file_type=metadata["file_type"],
+                file_size=metadata["file_size"],
             )
 
             created_document = self.document_repository.create_document(db, document)
@@ -36,9 +36,9 @@ class DocumentService:
 
             return created_document
 
-        except Exception as e:
+        except Exception:
 
-            logger.error(f"Document creation failed: {str(e)}")
+            logger.exception("Document creation failed")
 
             raise HTTPException(status_code=500, detail="Failed to create document")
 
@@ -48,9 +48,9 @@ class DocumentService:
 
             document = self.document_repository.get_document_by_id(db, document_id)
 
-        except Exception as e:
+        except Exception:
 
-            logger.error(f"Failed to fetch document: {str(e)}")
+            logger.exception(f"Failed to fetch document")
 
             raise HTTPException(status_code=500, detail="Failed to fetch document")
 
@@ -74,8 +74,7 @@ class DocumentService:
 
             return documents
 
-        except Exception as e:
-
-            logger.error(f"Failed to fetch documents: {str(e)}")
+        except Exception:
+            logger.exception(f"Failed to fetch document")
 
             raise HTTPException(status_code=500, detail="Failed to fetch documents")
