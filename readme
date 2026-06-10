@@ -1,0 +1,72 @@
+AI Document Intelligence Platform
+
+An end-to-end AI-powered document processing platform built using FastAPI, Streamlit, Celery, Redis, SQL Server, Docker, and the MVVM architectural pattern.
+
+The platform allows users to upload documents (PDF, Word, Images), automatically extracts text using OCR, performs NLP-based analysis, and provides search, analytics, and document insights through an interactive dashboard.
+
+Features
+    Document Upload
+        Upload PDF, DOCX, PNG, JPG, and JPEG files
+        File validation and metadata storage
+        REST API powered by FastAPI
+    OCR Processing
+        Extract text from scanned documents
+        Background processing using Celery workers
+        Queue management using Redis
+    NLP Processing
+        Document summarization
+        Keyword extraction
+        Named Entity Recognition (NER)
+        Document insights generation
+    Search and Analytics
+        Search extracted document content
+        View processing statistics
+        Track document processing status
+        Monitor OCR and NLP job results
+    Dashboard
+        Interactive Streamlit interface
+        Upload and manage documents
+        View extracted content
+        Analytics and reporting
+    Containerization
+        Dockerized services
+        Multi-container deployment using Docker Compose
+
+
+Tech Stack
+
+    Backend
+
+        FastAPI
+        SQLAlchemy
+        Pydantic
+
+    Frontend
+
+        Streamlit
+
+    Background Processing
+
+        Celery
+        Redis
+
+    Database
+
+        SQL Server
+
+    AI / NLP
+
+        PaddleOCR / Tesseract OCR
+        spaCy
+        Transformers
+        Sentence Transformers
+
+    DevOps
+
+        Docker
+        Docker Compose
+        GitHub Actions
+
+    Testing
+
+        Pytest
