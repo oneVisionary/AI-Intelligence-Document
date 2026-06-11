@@ -201,6 +201,57 @@ tesseract --version
 ```
 
 ---
+## Design Decision: Migration from Transformers to Ollama
+
+**Initially, the platform used Hugging Face Transformer models for document summarization. The first implementation used Facebook's `bart-large-cnn` model, which provided high-quality summaries but required significant memory resources.**
+
+**To reduce memory usage, the summarization model was later replaced with `sshleifer/distilbart-cnn-12-6`, a smaller distilled version of BART. While this reduced the model size, both FastAPI and Celery workers still needed to load separate instances of the model into memory.**
+
+### Previous Architecture
+
+```text
+FastAPI
+   │
+   └── Transformer Model (Loaded in Memory)
+
+Celery Worker
+   │
+   └── Transformer Model (Loaded in Memory)
+```
+
+This resulted in:
+
+* Duplicate model loading
+* Increased RAM consumption
+* Longer startup times
+* Limited scalability on resource-constrained systems
+
+### Current Architecture
+
+To address these limitations, the project was migrated to **Ollama** for local LLM inference.
+
+```text
+FastAPI
+   │
+Celery Worker
+   │
+   ▼
+ Ollama Service
+   │
+   ▼
+ Llama 3.2
+```
+
+### Benefits of Using Ollama
+
+* Single model instance shared across services
+* Reduced memory consumption
+* Faster application startup
+* Simplified model management
+* Offline AI processing
+* Better scalability for background task processing
+
+This architectural change significantly reduced resource usage on the development machine while maintaining document summarization capabilities.
 
 ## Install Ollama
 
