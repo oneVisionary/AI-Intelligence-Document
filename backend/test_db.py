@@ -18,3 +18,14 @@ except Exception as e:
 from core.config import settings
 
 print(settings.APP_NAME)
+print(settings.REDIS_URL)
+
+from services.nlp_service import NLPServices
+
+service = NLPServices()
+
+summary = service.summarise_text(
+    "FastAPI is a modern Python web framework designed for building APIs..."
+)
+
+print(summary)

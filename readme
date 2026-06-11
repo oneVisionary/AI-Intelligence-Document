@@ -1,72 +1,310 @@
-AI Document Intelligence Platform
+# AI Document Intelligence Platform
 
-An end-to-end AI-powered document processing platform built using FastAPI, Streamlit, Celery, Redis, SQL Server, Docker, and the MVVM architectural pattern.
+An AI-powered document processing platform built using FastAPI, PostgreSQL, Celery, Redis, Ollama, and Streamlit.
 
-The platform allows users to upload documents (PDF, Word, Images), automatically extracts text using OCR, performs NLP-based analysis, and provides search, analytics, and document insights through an interactive dashboard.
+The platform enables users to upload documents, automatically extract text using OCR, generate AI-powered summaries, and monitor document processing through a user-friendly dashboard.
 
-Features
-    Document Upload
-        Upload PDF, DOCX, PNG, JPG, and JPEG files
-        File validation and metadata storage
-        REST API powered by FastAPI
-    OCR Processing
-        Extract text from scanned documents
-        Background processing using Celery workers
-        Queue management using Redis
-    NLP Processing
-        Document summarization
-        Keyword extraction
-        Named Entity Recognition (NER)
-        Document insights generation
-    Search and Analytics
-        Search extracted document content
-        View processing statistics
-        Track document processing status
-        Monitor OCR and NLP job results
-    Dashboard
-        Interactive Streamlit interface
-        Upload and manage documents
-        View extracted content
-        Analytics and reporting
-    Containerization
-        Dockerized services
-        Multi-container deployment using Docker Compose
+---
 
+## Features
 
-Tech Stack
+### Document Upload
 
-    Backend
+* Upload PDF, PNG, JPG, and JPEG files
+* File validation and metadata storage
+* REST API powered by FastAPI
 
-        FastAPI
-        SQLAlchemy
-        Pydantic
+### OCR Processing
 
-    Frontend
+* Text extraction from PDF documents using PyMuPDF
+* OCR support for images using Tesseract OCR
+* Background processing using Celery workers
+* Queue management using Redis
 
-        Streamlit
+### AI-Powered Summarization
 
-    Background Processing
+* Local LLM-based summarization using Ollama
+* No dependency on external AI APIs
+* Offline AI processing support
 
-        Celery
-        Redis
+### Background Task Processing
 
-    Database
+* Asynchronous document processing using Celery
+* Redis as message broker
+* Non-blocking API requests
 
-        SQL Server
+### Document Management
 
-    AI / NLP
+* Track processing status
+* Store extracted text
+* Store generated summaries
+* View document metadata
 
-        PaddleOCR / Tesseract OCR
-        spaCy
-        Transformers
-        Sentence Transformers
+### Dashboard
 
-    DevOps
+* Interactive Streamlit interface
+* Upload and manage documents
+* View extracted content and summaries
+* Monitor document processing
 
-        Docker
-        Docker Compose
-        GitHub Actions
+---
 
-    Testing
+## Tech Stack
 
-        Pytest
+### Backend
+
+* FastAPI
+* SQLAlchemy
+* Pydantic Settings
+* Uvicorn
+
+### Database
+
+* PostgreSQL
+
+### OCR & Document Processing
+
+* Tesseract OCR
+* PyMuPDF
+* Pillow
+
+### AI & NLP
+
+* Ollama
+* Local LLM Inference
+
+### Background Processing
+
+* Celery
+* Redis
+
+### Frontend
+
+* Streamlit
+
+### DevOps
+
+* Docker
+* Docker Compose
+
+### Testing
+
+* Pytest
+
+---
+
+## Architecture
+
+```text
+Streamlit
+    │
+    ▼
+ FastAPI API
+    │
+    ▼
+ PostgreSQL
+    │
+    ▼
+   Celery
+    │
+    ▼
+   Redis
+    │
+    ▼
+ OCR Service
+(PyMuPDF / Tesseract)
+    │
+    ▼
+ Ollama
+(Llama 3.2)
+```
+
+---
+
+## Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/your-username/ai-document-intelligence-platform.git
+
+cd ai-document-intelligence-platform
+```
+
+### Create Virtual Environment
+
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Install PostgreSQL
+
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+---
+
+## Install Redis
+
+```bash
+sudo apt update
+sudo apt install redis-server
+```
+
+Start Redis:
+
+```bash
+sudo systemctl start redis-server
+```
+
+Verify:
+
+```bash
+redis-cli ping
+```
+
+Expected Output:
+
+```text
+PONG
+```
+
+Check Status:
+
+```bash
+sudo systemctl status redis-server
+```
+
+---
+
+## Install Tesseract OCR
+
+```bash
+sudo apt install tesseract-ocr
+```
+
+Verify Installation:
+
+```bash
+tesseract --version
+```
+
+---
+
+## Install Ollama
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+Verify Installation:
+
+```bash
+ollama --version
+```
+
+Download Model:
+
+```bash
+ollama pull llama3.2:1b
+```
+
+Verify Download:
+
+```bash
+ollama list
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+DATABASE_URL=postgresql://postgres:password@localhost:5432/document_ai
+
+REDIS_URL=redis://localhost:6379/0
+```
+
+---
+
+## Create Database Tables
+
+```bash
+python create_tables.py
+```
+
+---
+
+## Verify Celery Configuration
+
+```bash
+python -c "from worker.celery_app import celery_app; print('OK')"
+```
+
+Expected Output:
+
+```text
+OK
+```
+
+---
+
+## Start Celery Worker
+
+```bash
+celery -A worker.celery_app:celery_app worker --loglevel=info --concurrency=1
+```
+
+---
+
+## Run FastAPI Application
+
+```bash
+uvicorn main:app --reload
+```
+
+API Documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Run Tests
+
+```bash
+pytest
+```
+
+---
+
+## Future Enhancements
+
+* Keyword Extraction
+* Named Entity Recognition (NER)
+* Semantic Search
+* Vector Database Integration
+* Retrieval-Augmented Generation (RAG)
+* Authentication & Authorization
+* Cloud Deployment
+* CI/CD Pipeline
+
+---
+
+## License
+
+This project is intended for educational,  purposes.
