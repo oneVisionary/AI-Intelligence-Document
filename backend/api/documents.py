@@ -26,4 +26,11 @@ def get_all_document(db: Session = Depends(get_db)):
 
 @router.get("/{document_id}")
 def get_document(document_id: str, db: Session = Depends(get_db)):
-    return document_services.get_document(db, document_id)
+
+    print("Requested ID:", document_id)
+
+    result = document_services.get_document(db, document_id)
+
+    print("Result:", result)
+
+    return result

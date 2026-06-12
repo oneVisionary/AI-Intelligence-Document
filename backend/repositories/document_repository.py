@@ -10,9 +10,7 @@ class DocumentRepository:
         return document
 
     def get_document_by_id(self, db: Session, document_id: str) -> Document | None:
-        document_data = (
-            db.query(Document).filter(Document.document_id == document_id).first()
-        )
+        document_data = db.query(Document).filter(Document.id == document_id).first()
         return document_data
 
     def get_all_documents(self, db: Session):

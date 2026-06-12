@@ -1,39 +1,22 @@
 import streamlit as st
 
+from views.upload import show_upload_page
+from views.documents import show_documents_page
+from views.project_details import show_about
+
 st.set_page_config(page_title="AI Document Intelligence", page_icon="📄", layout="wide")
 
-st.title("📄 AI Document Intelligence Platform")
 
-col1, col2, col3, col4 = st.columns(4)
+with st.sidebar:
+    st.header("Navigation")
 
-with col1:
-    st.metric("Documents", 120)
+    page = st.radio("Go to", ["🏠 Dashboard", "📤 Upload", "📚 Documents"])
 
-with col2:
-    st.metric("Processed", 95)
+if page == "🏠 Dashboard":
+    show_about()
 
-with col3:
-    st.metric("Pending", 20)
+elif page == "📤 Upload":
+    show_upload_page()
 
-with col4:
-    st.metric("Failed", 5)
-
-st.divider()
-
-st.subheader("Recent Activity")
-
-st.dataframe(
-    [
-        {
-            "Filename": "invoice_01.pdf",
-            "Status": "Processed",
-            "Upload Time": "2 min ago",
-        },
-        {
-            "Filename": "contract.pdf",
-            "Status": "Processing",
-            "Upload Time": "5 min ago",
-        },
-    ],
-    use_container_width=True,
-)
+elif page == "📚 Documents":
+    show_documents_page()
