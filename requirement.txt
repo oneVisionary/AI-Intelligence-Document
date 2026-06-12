@@ -12,3 +12,4 @@ ollama
 streamlit
 pandas
 requests
+alembic

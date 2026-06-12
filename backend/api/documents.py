@@ -29,7 +29,7 @@ def get_document(document_id: str, db: Session = Depends(get_db)):
 
     print("Requested ID:", document_id)
 
-    result = document_services.get_document(db, document_id)
+    result = document_services.get_document_by_uniqueid(db, document_id)
 
     print("Result:", result)
 

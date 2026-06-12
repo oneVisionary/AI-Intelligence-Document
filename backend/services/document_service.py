@@ -46,24 +46,6 @@ class DocumentService:
             )
             process_document.delay(created_document.document_id)
 
-            # extracted_text = self.extraction_service.extract_text(
-            #     file_path=file_path, file_type=metadata["file_type"]
-            # )
-
-            # created_document = self.document_repository.update_extracted_text(
-            #     db, created_document, extracted_text
-            # )
-            # summary = self.nlp_service.summarise_text(extracted_text)
-            # created_document = self.document_repository.update_summary(
-            #     db, created_document, summary
-            # )
-            # created_document = self.document_repository.update_document_status(
-            #     db, created_document, "completed"
-            # )
-
-            # logger.info(
-            #     f"Document created successfully: " f"{created_document.document_id}"
-            # )
 
             return created_document
 
@@ -82,6 +64,25 @@ class DocumentService:
         try:
 
             document = self.document_repository.get_document_by_id(db, document_id)
+
+        except Exception:
+
+            logger.exception(f"Failed to fetch document")
+
+            raise HTTPException(status_code=500, detail="Failed to fetch document")
+
+        if not document:
+
+            logger.warning(f"Document not found: {document_id}")
+
+            raise HTTPException(status_code=404, detail="Document not found")
+
+        return document
+    def get_document_by_uniqueid(self, db: Session, document_id: str):
+
+        try:
+
+            document = self.document_repository.get_document_by_unique_id(db, document_id)
 
         except Exception:
 

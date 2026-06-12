@@ -1,5 +1,5 @@
 from worker.celery_app import celery_app
-
+from datetime import datetime
 
 from services.extraction_service import ExtractionService
 from services.nlp_service import NLPServices
@@ -29,7 +29,9 @@ def process_document(document_id: str):
             logger.error(f"Document not found: {document_id}")
 
             return
+        # ocr start
 
+        document_repository.update_ocr_started(db, document)
         extracted_text = extraction_service.extract_text(
             file_path=document.file_path,
             file_type=document.file_type,
@@ -40,7 +42,8 @@ def process_document(document_id: str):
             document,
             extracted_text,
         )
-
+        document_repository.update_ocr_completed(db, document)
+        document_repository.update_summary_started(db, document)
         summary = nlp_service.summarise_text(extracted_text)
 
         document_repository.update_summary(
@@ -54,7 +57,7 @@ def process_document(document_id: str):
             document,
             "completed",
         )
-
+        document_repository.update_summary_completed(db, document)
         logger.info(f"Processing completed: {document_id}")
 
     except Exception:

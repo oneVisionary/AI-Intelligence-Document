@@ -1,11 +1,15 @@
+```gitignore
 # =========================
 # Python
 # =========================
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
+# =========================
 # Virtual Environments
+# =========================
 venv/
 .venv/
 env/
@@ -29,13 +33,13 @@ logs/
 uploads/
 
 # =========================
-# Database
+# Database Files
 # =========================
 *.db
 *.sqlite3
 
 # =========================
-# IDE
+# IDE / Editors
 # =========================
 .vscode/
 .idea/
@@ -48,7 +52,7 @@ uploads/
 htmlcov/
 
 # =========================
-# Build
+# Build Artifacts
 # =========================
 build/
 dist/
@@ -71,7 +75,7 @@ Thumbs.db
 .docker/
 
 # =========================
-# Hugging Face
+# Hugging Face Cache
 # =========================
 .cache/
 huggingface/
@@ -82,7 +86,15 @@ huggingface/
 ollama-models/
 
 # =========================
+# Alembic Cache
+# =========================
+backend/alembic/__pycache__/
+backend/alembic/versions/__pycache__/
+backend/alembic/
+backend/alembic.ini
+# =========================
 # Misc
 # =========================
 *.swp
 *.swo
+```
